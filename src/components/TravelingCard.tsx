@@ -130,11 +130,11 @@ export default function TravelingCard() {
 
   // ── Card opacity ───────────────────────────────────────────
   // Stays fully visible throughout hero, services, and About Me.
-  // Only begins to fade once Projects starts (at aboutExit) — gone by 10% into Projects.
+  // Snaps out quickly (3% scroll) right as About Me ends — before Experience is visible.
   const cardOpacity = useTransform(scrollYProgress, (p) => {
     const { aboutExit } = breaksRef.current;
-    const fadeStart = aboutExit - 0.01;               // just as About Me finishes
-    const fadeEnd   = Math.min(aboutExit + 0.10, 1.0); // fades over the first 10% of Projects
+    const fadeStart = aboutExit - 0.005;              // just as About Me finishes
+    const fadeEnd   = Math.min(aboutExit + 0.03, 1.0); // fades out within 3% — tight snap
     return lerp(p, fadeStart, fadeEnd, 1, 0);
   });
 
