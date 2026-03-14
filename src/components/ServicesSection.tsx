@@ -207,8 +207,8 @@ export default function ServicesSection() {
               lineHeight: 1.6,
               maxWidth:   460,
             }}>
-              As a full-stack engineer, I build robust, scalable products across SaaS
-              platforms and hospitality systems, with a sharp eye for performance and detail.
+              I build things end to end. From the database up to the UI, I take ownership
+              of the full product and care about performance, reliability and clean code.
             </p>
           </motion.div>
 

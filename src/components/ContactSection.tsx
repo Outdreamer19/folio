@@ -168,8 +168,8 @@ export default function ContactSection() {
             margin:     '0 0 36px',
             maxWidth:   480,
           }}>
-            Let's build something impactful together, whether it's your brand,
-            your website, or your next big idea.
+            Got a project in mind? I'd love to hear about it. Drop me a message
+            and I'll get back to you.
           </motion.p>
 
           {/* Form */}

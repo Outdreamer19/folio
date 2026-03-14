@@ -102,11 +102,11 @@ export default function AboutSection() {
             margin:     0,
             maxWidth:   480,
           }}>
-            Hi, I'm Shane, a full-stack software engineer with 6+ years of experience building
-            scalable web applications. I spent 6 years at the National Water Commission in Jamaica
-            before relocating to the UK, where I've shipped three independent products including
-            InvoiceFeed and Blendable AI. I work across the full stack with PHP, Laravel, Vue.js,
-            React, and TypeScript, and I'm actively seeking remote or hybrid employment.
+            I'm Shane, a software engineer based in Luton, UK. I spent 6 years building
+            full-stack systems at the National Water Commission in Jamaica before relocating.
+            Since then I've shipped three products on my own, including InvoiceFeed and
+            Blendable AI. I work across PHP, Laravel, Vue, React and TypeScript and I'm
+            currently looking for my next role, remote or hybrid.
           </p>
 
           {/* Stats */}

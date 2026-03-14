@@ -19,5 +19,18 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      'no-restricted-syntax': [
+        'warn',
+        {
+          selector: "Literal[value=/\u2014/]",
+          message: 'No em dashes in visible strings. Use a comma, colon, or rewrite the sentence.',
+        },
+        {
+          selector: "TemplateLiteral",
+          message: 'Check template literals for em dashes (\u2014) before committing.',
+        },
+      ],
+    },
   },
 ])

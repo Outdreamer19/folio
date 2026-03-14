@@ -232,8 +232,8 @@ export default function ExperienceSection() {
             lineHeight: 1.65,
             margin:     0,
           }}>
-            6+ years of professional software engineering, from enterprise government systems
-            to independently shipped SaaS products.
+            6 years in a government engineering team in Jamaica, then three solo products
+            built and shipped after relocating to the UK.
           </p>
         </motion.div>
 
