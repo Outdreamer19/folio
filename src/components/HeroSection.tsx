@@ -22,7 +22,7 @@ export default function HeroSection() {
       }}
     >
       {/* Aurora background — subtle animated light sweep, top-right quadrant */}
-      <AuroraLayer opacity={0.35} />
+      <AuroraLayer opacity={0.9} />
 
       {/* Floating navbar */}
       <Navbar />
