@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useCountUp } from '../hooks/useCountUp';
 
-// ── Social icons ──────────────────────────────────────────────
 function XIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
@@ -23,16 +22,7 @@ function GithubIcon() {
     </svg>
   );
 }
-function DribbbleIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <circle cx="12" cy="12" r="10"/>
-      <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/>
-    </svg>
-  );
-}
 
-// ── Stat item with count-up ───────────────────────────────────
 function StatItem({ value, label, suffix = '' }: { value: number; label: string; suffix?: string }) {
   const { count, ref } = useCountUp(value, 2200);
   return (
@@ -64,7 +54,6 @@ function StatItem({ value, label, suffix = '' }: { value: number; label: string;
   );
 }
 
-// ── Main component ────────────────────────────────────────────
 export default function AboutSection() {
   return (
     <section
@@ -109,14 +98,15 @@ export default function AboutSection() {
             fontSize:   16,
             fontWeight: 300,
             color:      'rgb(48, 48, 48)',
-            lineHeight: 1.65,
+            lineHeight: 1.7,
             margin:     0,
             maxWidth:   480,
           }}>
-            Hi, I'm Shane — a software engineer with 6+ years of experience building scalable
-            web applications. I founded and independently shipped InvoiceFeed, a full SaaS
-            platform. Comfortable across the full stack, I work with PHP, Laravel, Vue.js,
-            TypeScript, and TailwindCSS.
+            Hi, I'm Shane — a full-stack software engineer with 6+ years of experience building
+            scalable web applications. I spent 6 years at the National Water Commission in Jamaica
+            before relocating to the UK, where I've shipped three independent products including
+            InvoiceFeed and Blendable AI. I work across the full stack with PHP, Laravel, Vue.js,
+            React, and TypeScript, and I'm actively seeking remote or hybrid employment.
           </p>
 
           {/* Stats */}
@@ -126,18 +116,15 @@ export default function AboutSection() {
             gap:                 28,
             paddingTop:          8,
           }}>
-            <StatItem value={6}  label="Years of Experience" suffix="+" />
+            <StatItem value={6}  label="Years of Experience"   suffix="+" />
             <StatItem value={3}  label="Shipped Products" />
-            <StatItem value={10} label="Technologies Mastered" suffix="+" />
+            <StatItem value={20} label="Technologies in my stack" suffix="+" />
           </div>
 
           {/* Contact */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 300, color: 'rgb(48,48,48)' }}>
-              📞 +44 7565 727032
-            </span>
-            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 300, color: 'rgb(48,48,48)' }}>
-              ✉️ shane1obdurate@gmail.com
+              ✉️ shane@shanebell.dev
             </span>
             <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 16, fontWeight: 300, color: 'rgb(48,48,48)' }}>
               📍 Luton, UK · Right to Work
@@ -150,7 +137,6 @@ export default function AboutSection() {
               { Icon: XIcon,        label: 'X (Twitter)', href: '#' },
               { Icon: LinkedInIcon, label: 'LinkedIn',    href: 'https://www.linkedin.com/in/shane-bell-740b8569' },
               { Icon: GithubIcon,   label: 'GitHub',      href: 'https://github.com/Outdreamer19' },
-              { Icon: DribbbleIcon, label: 'Dribbble',    href: '#' },
             ].map(({ Icon, label, href }) => (
               <motion.a
                 key={label}
@@ -172,8 +158,8 @@ export default function AboutSection() {
             ))}
           </div>
 
-          {/* CTA */}
-          <div>
+          {/* CTAs */}
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <motion.a
               href="https://github.com/Outdreamer19"
               target="_blank"
@@ -197,6 +183,39 @@ export default function AboutSection() {
               }}
             >
               MY GITHUB
+            </motion.a>
+
+            <motion.a
+              href="/Shane_Bell_CV.pdf"
+              download="Shane_Bell_CV.pdf"
+              whileHover={{ backgroundColor: 'rgba(94,103,230,0.08)' }}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                display:         'inline-flex',
+                alignItems:      'center',
+                gap:             7,
+                backgroundColor: 'transparent',
+                color:           'rgb(94, 103, 230)',
+                fontFamily:      "'Antonio', sans-serif",
+                fontSize:        14,
+                fontWeight:      700,
+                textTransform:   'uppercase',
+                letterSpacing:   '0.1em',
+                borderRadius:    99,
+                padding:         '12px 32px',
+                textDecoration:  'none',
+                cursor:          'pointer',
+                border:          '1.5px solid rgba(94,103,230,0.4)',
+                transition:      'background-color 0.2s ease',
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              DOWNLOAD CV
             </motion.a>
           </div>
         </motion.div>

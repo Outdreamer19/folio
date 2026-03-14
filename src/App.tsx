@@ -1,13 +1,14 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HeroSection     from './components/HeroSection';
-import ServicesSection from './components/ServicesSection';
-import AboutSection    from './components/AboutSection';
-import ProjectsSection from './components/ProjectsSection';
-import ContactSection  from './components/ContactSection';
-import Footer          from './components/Footer';
-import TravelingCard   from './components/TravelingCard';
-import AllProjectsPage from './pages/AllProjectsPage';
+import HeroSection       from './components/HeroSection';
+import ServicesSection   from './components/ServicesSection';
+import AboutSection      from './components/AboutSection';
+import ExperienceSection from './components/ExperienceSection';
+import ProjectsSection   from './components/ProjectsSection';
+import ContactSection    from './components/ContactSection';
+import Footer            from './components/Footer';
+import TravelingCard     from './components/TravelingCard';
+import AllProjectsPage   from './pages/AllProjectsPage';
 
 // ── Home page ─────────────────────────────────────────────────
 function HomePage() {
@@ -16,6 +17,7 @@ function HomePage() {
       <HeroSection />
       <ServicesSection />
       <AboutSection />
+      <ExperienceSection />
       <ProjectsSection />
       <ContactSection />
       <Footer />

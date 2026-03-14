@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from './Navbar';
 import { ParticleTextEffect } from '@/components/ui/particle-text-effect';
@@ -6,8 +5,6 @@ import { ParticleTextEffect } from '@/components/ui/particle-text-effect';
 const springIn = { type: 'spring' as const, bounce: 0, duration: 1, delay: 0.3 };
 
 export default function HeroSection() {
-  const [darkMode, setDarkMode] = useState(false);
-
   return (
     <section
       id="hero"
@@ -26,7 +23,7 @@ export default function HeroSection() {
       {/* Floating navbar */}
       <Navbar />
 
-      {/* ── LEFT: "SHANE BELL" particle name + "DIGITAL" ── */}
+      {/* ── LEFT: "SHANE BELL" particle name + "SOFTWARE" ── */}
       <motion.div
         initial={{ x: -150, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -63,76 +60,43 @@ export default function HeroSection() {
           lineHeight:    0.9,
           letterSpacing: '-0.02em',
         }}>
-          DIGITAL
+          SOFTWARE
         </span>
-      </motion.div>
 
-      {/* ── CENTER: dark mode toggle ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
-        style={{
-          position:      'absolute',
-          bottom:        60,
-          left:          '50%',
-          transform:     'translateX(-50%)',
-          zIndex:        20,
-          display:       'flex',
-          alignItems:    'center',
-          gap:           10,
-        }}
-      >
-        {/* Sun */}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="rgb(48,48,48)" strokeWidth="2">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1"  x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22"  y1="4.22"  x2="5.64"  y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1"  y1="12" x2="3"  y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22"  y1="19.78" x2="5.64"  y2="18.36"/>
-          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
-        </svg>
-
-        {/* Toggle */}
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          aria-label="Toggle dark mode"
+        {/* Open-to-work pill */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.6, duration: 0.5 }}
           style={{
-            position:        'relative',
+            marginTop:       18,
             display:         'inline-flex',
             alignItems:      'center',
-            width:           52,
-            height:          28,
-            backgroundColor: darkMode ? 'rgb(94, 103, 230)' : '#e2e2e2',
+            gap:             8,
+            padding:         '7px 16px',
             borderRadius:    999,
-            padding:         3,
-            border:          'none',
-            cursor:          'pointer',
-            transition:      'background-color 0.25s ease',
+            border:          '1px solid rgba(94,103,230,0.25)',
+            backgroundColor: 'rgba(94,103,230,0.06)',
           }}
         >
-          <motion.div
-            animate={{ x: darkMode ? 24 : 0 }}
-            transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-            style={{
-              width:           22,
-              height:          22,
-              backgroundColor: 'white',
-              borderRadius:    '50%',
-              boxShadow:       '0 1px 4px rgba(0,0,0,0.18)',
-            }}
-          />
-        </button>
-
-        {/* Moon */}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="rgb(48,48,48)" strokeWidth="2">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
+          <span style={{
+            width:           7,
+            height:          7,
+            borderRadius:    '50%',
+            backgroundColor: 'rgb(52, 211, 153)',
+            boxShadow:       '0 0 6px rgb(52,211,153)',
+            flexShrink:      0,
+          }} />
+          <span style={{
+            fontFamily:  "'Inter', sans-serif",
+            fontSize:    13,
+            fontWeight:  400,
+            color:       'rgb(60, 60, 70)',
+            whiteSpace:  'nowrap',
+          }}>
+            Open to remote &amp; hybrid roles · Laravel · Vue · React
+          </span>
+        </motion.div>
       </motion.div>
 
       {/* ── RIGHT: "ENGINEER" + subtitle ── */}

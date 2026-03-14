@@ -93,7 +93,7 @@ export default function ContactSection() {
     const body     = encodeURIComponent(
       `Hi Shane,\n\nName: ${form.name}\nEmail: ${form.email}\nService: ${form.service}\n\n${form.message}`
     );
-    window.open(`mailto:shane1obdurate@gmail.com?subject=${subject}&body=${body}`, '_blank');
+    window.open(`mailto:shane@shanebell.dev?subject=${subject}&body=${body}`, '_blank');
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
   }
