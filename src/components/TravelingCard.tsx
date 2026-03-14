@@ -52,7 +52,8 @@ function getCardSize(vw: number) {
 
 // ── Component ─────────────────────────────────────────────────
 export default function TravelingCard() {
-  const { scrollYProgress } = useScroll();
+  // Both raw pixel scrollY (for natural scroll-out) and progress (for breakpoints/flips)
+  const { scrollY, scrollYProgress } = useScroll();
 
   // ── Responsive card dimensions ────────────────────────────
   const [card, setCard] = useState(() => getCardSize(window.innerWidth));
@@ -62,9 +63,12 @@ export default function TravelingCard() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // ── Scroll breakpoints ────────────────────────────────────
-  const breaksRef      = useRef({ heroExit: 0.18, servicesExit: 0.42, aboutExit: 0.62 });
-  const rightOffsetRef = useRef(285);
+  // ── Measurements ─────────────────────────────────────────
+  // heroExit / servicesExit as progress fractions (for X + flip)
+  // alignScrollY = the exact scrollY pixel where About Me's centre aligns with viewport centre
+  const breaksRef = useRef({ heroExit: 0.18, servicesExit: 0.42 });
+  const rightOffsetRef  = useRef(285);
+  const alignScrollYRef = useRef(9999); // scrollY px where About Me centre = viewport centre
 
   useLayoutEffect(() => {
     const calc = () => {
@@ -83,8 +87,13 @@ export default function TravelingCard() {
       breaksRef.current = {
         heroExit:     heroH / totalScroll,
         servicesExit: (heroH + servicesH) / totalScroll,
-        aboutExit:    (heroH + servicesH + aboutH) / totalScroll,
       };
+
+      // The scroll position at which About Me's vertical centre
+      // sits exactly at the viewport's vertical centre.
+      // After this point every 1px of scroll = 1px of card upward travel.
+      const aboutCentreDoc    = heroH + servicesH + aboutH / 2;
+      alignScrollYRef.current = aboutCentreDoc - window.innerHeight / 2;
 
       rightOffsetRef.current = Math.round(Math.min(window.innerWidth * 0.205, 300));
     };
@@ -95,22 +104,30 @@ export default function TravelingCard() {
   }, []);
 
   // ── Card X ────────────────────────────────────────────────
-  // Moves from center (0) → right column during last 40% of hero
   const rawX = useTransform(scrollYProgress, (p) => {
     const { heroExit } = breaksRef.current;
     return lerp(p, heroExit * 0.60, heroExit, 0, rightOffsetRef.current);
   });
 
+  // ── Card Y — natural scroll-out with About Me ─────────────
+  // y = 0 while About Me centre hasn't reached viewport centre yet.
+  // Once it does, every scroll pixel drives 1px upward — card rides
+  // off the top exactly as if it were in the document flow.
+  const rawY = useTransform(scrollY, (sy) => {
+    const alignY = alignScrollYRef.current;
+    if (sy <= alignY) return 0;
+    return -(sy - alignY); // 1 : 1 pixel tracking — NO spring here
+  });
+
   // ── Card rotateY ─────────────────────────────────────────
-  // Flip 1 portrait→workspace: last 40% of hero (0° → 180°)
-  // Flip 2 workspace→portrait: WITHIN Services section, completes well before About Me (180° → 360°)
+  // Flip 1 portrait → workspace : last 40% of hero      (0° → 180°)
+  // Flip 2 workspace → portrait : within Services section (180° → 360°)
   const rawRotateY = useTransform(scrollYProgress, (p) => {
     const { heroExit, servicesExit } = breaksRef.current;
 
     const flip1Start = heroExit * 0.60;
     const flip1End   = heroExit;
 
-    // Flip 2 entirely inside Services — done before About Me is ever reached
     const flip2Start = heroExit + (servicesExit - heroExit) * 0.35;
     const flip2End   = heroExit + (servicesExit - heroExit) * 0.80;
 
@@ -118,21 +135,12 @@ export default function TravelingCard() {
     if (p <= flip1End)   return lerp(p, flip1Start, flip1End, 0, 180);
     if (p <= flip2Start) return 180;
     if (p <= flip2End)   return lerp(p, flip2Start, flip2End, 180, 360);
-    return 360; // portrait face showing from here on
+    return 360;
   });
 
-  // Subtle organic tilt
   const rawTilt = useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 2]);
 
-  // ── Card opacity ──────────────────────────────────────────
-  // Fully visible (1) throughout hero, services and About Me.
-  // Snaps to 0 the instant About Me ends — no fade, hard cutoff.
-  const cardOpacity = useTransform(scrollYProgress, (p) => {
-    const { aboutExit } = breaksRef.current;
-    return p < aboutExit ? 1 : 0;
-  });
-
-  // Faster spring on rotateY so it settles quickly inside Services
+  // Springs — rotateY and tilt only; Y must NOT be sprung (needs 1:1 tracking)
   const rotateY = useSpring(rawRotateY, { bounce: 0, duration: 500 });
   const tilt    = useSpring(rawTilt,    { bounce: 0, duration: 1000 });
 
@@ -143,8 +151,9 @@ export default function TravelingCard() {
   const halfH = card.h / 2;
 
   return (
-    // Entrance: scale up only — opacity is entirely controlled by cardOpacity motion value
-    // (do NOT put opacity in animate — it would permanently override the motion value)
+    // Entrance: scale up only.
+    // Opacity is NOT set here — card is always visible while on-screen.
+    // Exit is purely positional: rawY carries it off the top of the viewport.
     <motion.div
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
@@ -156,8 +165,8 @@ export default function TravelingCard() {
         marginLeft:    -halfW,
         marginTop:     -halfH,
         x:             rawX,
+        y:             rawY,   // ← drives natural scroll-out
         rotate:        tilt,
-        opacity:       cardOpacity,   // ← sole controller of opacity
         zIndex:        50,
         pointerEvents: 'none',
       }}
@@ -228,13 +237,7 @@ export default function TravelingCard() {
             zIndex:          10,
           }}
         >
-          <span style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize:   32,
-            fontWeight: 400,
-            color:      'white',
-            lineHeight: 1,
-          }}>
+          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 32, fontWeight: 400, color: 'white', lineHeight: 1 }}>
             Hi
           </span>
         </motion.div>
