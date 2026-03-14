@@ -168,7 +168,7 @@ export default function ContactSection() {
             margin:     '0 0 36px',
             maxWidth:   480,
           }}>
-            Let's build something impactful together — whether it's your brand,
+            Let's build something impactful together, whether it's your brand,
             your website, or your next big idea.
           </motion.p>
 

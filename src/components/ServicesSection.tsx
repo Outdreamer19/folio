@@ -23,7 +23,7 @@ const services: AccordionItem[] = [
     title: '2. SAAS PRODUCTS',
     items: [
       'SaaS platform architecture from zero to production',
-      'Stripe payment integration — one-time and subscriptions',
+      'Stripe payment integration: one-time and subscriptions',
       'Multi-role authentication and user management systems',
       'Scalable, maintainable codebases built to grow with the product',
     ],
@@ -45,7 +45,7 @@ const services: AccordionItem[] = [
       'Mentoring junior developers and code review',
       'Translating business requirements into technical solutions',
       'Cross-functional collaboration with designers, BAs, and QA',
-      'Agile delivery — pragmatic balance of speed, cost, and quality',
+      'Agile delivery: pragmatic balance of speed, cost, and quality',
     ],
   },
 ];
@@ -207,8 +207,8 @@ export default function ServicesSection() {
               lineHeight: 1.6,
               maxWidth:   460,
             }}>
-              As a full-stack engineer, I build robust, scalable products — from SaaS
-              platforms to hospitality systems — with a sharp eye for performance and detail.
+              As a full-stack engineer, I build robust, scalable products across SaaS
+              platforms and hospitality systems, with a sharp eye for performance and detail.
             </p>
           </motion.div>
 

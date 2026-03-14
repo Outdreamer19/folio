@@ -23,7 +23,7 @@ export const projects: Project[] = [
     category: 'SaaS · Full Stack',
     tagline: 'Invoice management, simplified.',
     description:
-      'A full SaaS platform for creating, managing and processing invoices — built and shipped independently. Features real-time invoice creation, multi-role auth, Stripe subscriptions, and a CI/CD pipeline on Digital Ocean.',
+      'A full SaaS platform for creating, managing and processing invoices, built and shipped independently. Features real-time invoice creation, multi-role auth, Stripe subscriptions, and a CI/CD pipeline on Digital Ocean.',
     highlights: [
       'Built from zero to production as solo founder',
       'Stripe one-time payments & recurring subscriptions',
@@ -47,7 +47,7 @@ export const projects: Project[] = [
     category: 'AI Platform · Full Stack',
     tagline: 'One interface. Every AI model.',
     description:
-      'A multi-model AI chat platform where users interact with different AI models and create custom personas with defined behaviours, knowledge bases, and team workspaces — all in a single unified interface.',
+      'A multi-model AI chat platform where users interact with different AI models and create custom personas with defined behaviours, knowledge bases, and team workspaces. All in a single unified interface.',
     highlights: [
       'Multi-model chat: switch AI models in one app',
       'Custom personas with attached knowledge bases',
@@ -71,7 +71,7 @@ export const projects: Project[] = [
     category: 'Hospitality · Web App',
     tagline: 'Caribbean flavours, served online.',
     description:
-      'A full-featured hospitality web app for a Caribbean smokehouse restaurant — complete with online reservations, events management, a dynamic admin dashboard, and newsletter subscriptions.',
+      'A full-featured hospitality web app for a Caribbean smokehouse restaurant, complete with online reservations, events management, a dynamic admin dashboard, and newsletter subscriptions.',
     highlights: [
       'Online reservation booking system',
       'Events management & vacancies board',

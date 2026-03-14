@@ -26,12 +26,12 @@ const roles: Role[] = [
     note:     'Relocated to UK',
     color:    'rgb(94, 103, 230)',
     bullets: [
-      'Developed full-stack applications with JavaScript, Vue.js, TailwindCSS, and PHP — delivering scalable, responsive solutions for internal and public-facing platforms.',
+      'Developed full-stack applications with JavaScript, Vue.js, TailwindCSS, and PHP, delivering scalable, responsive solutions for internal and public-facing platforms.',
       'Built data-driven systems using SQL with optimised queries ensuring efficient data flow between front-end and back-end.',
       'Collaborated with cross-functional teams including product, UX/UI designers, and non-technical stakeholders to architect and deliver robust solutions.',
       'Maintained legacy systems while migrating key applications to modern technologies, improving performance and scalability.',
       'Led the redesign of the company website using HTML5, CSS3, and JavaScript.',
-      'Developed robust applications using Laravel, Vue, React, and MySQL — consistently focusing on performance, security, and maintainability.',
+      'Developed robust applications using Laravel, Vue, React, and MySQL, consistently focusing on performance, security, and maintainability.',
     ],
   },
 ];
@@ -232,7 +232,7 @@ export default function ExperienceSection() {
             lineHeight: 1.65,
             margin:     0,
           }}>
-            6+ years of professional software engineering — from enterprise government systems
+            6+ years of professional software engineering, from enterprise government systems
             to independently shipped SaaS products.
           </p>
         </motion.div>

@@ -59,8 +59,8 @@ const projects: ProjectDetail[] = [
     title:       'InvoiceFeed',
     category:    'SaaS · Full Stack',
     tagline:     'Invoice management, simplified.',
-    description: 'A complete SaaS platform for creating, managing and processing invoices — designed, architected, and shipped independently. From authentication to payments to cloud deployment, every layer was built from scratch.',
-    challenge:   'Building a production-grade SaaS solo means owning every technical decision — infrastructure, security, payment flows, and UX. The challenge was creating a platform robust enough to handle real financial data while keeping the codebase lean and maintainable.',
+    description: 'A complete SaaS platform for creating, managing and processing invoices, designed, architected, and shipped independently. From authentication to payments to cloud deployment, every layer was built from scratch.',
+    challenge:   'Building a production-grade SaaS solo means owning every technical decision: infrastructure, security, payment flows, and UX. The challenge was creating a platform robust enough to handle real financial data while keeping the codebase lean and maintainable.',
     highlights: [
       'Architected the full system from zero to production as sole founder',
       'Stripe integration for one-time payments and recurring subscriptions',
@@ -89,8 +89,8 @@ const projects: ProjectDetail[] = [
     title:       'Blendable AI',
     category:    'AI Platform · Full Stack',
     tagline:     'One interface. Every AI model.',
-    description: 'A multi-model AI chat platform allowing users to interact with multiple AI providers, build custom personas with tailored knowledge bases, manage team workspaces, and access image generation tools — all from a single unified interface.',
-    challenge:   'The key engineering challenge was designing a unified abstraction layer that could route requests to different AI models seamlessly, while maintaining per-user quota tracking, Stripe billing, and real-time streaming responses — all without blocking the UI.',
+    description: 'A multi-model AI chat platform allowing users to interact with multiple AI providers, build custom personas with tailored knowledge bases, manage team workspaces, and access image generation tools. All from a single unified interface.',
+    challenge:   'The key engineering challenge was designing a unified abstraction layer that could route requests to different AI models seamlessly, while maintaining per-user quota tracking, Stripe billing, and real-time streaming responses, all without blocking the UI.',
     highlights: [
       'Unified interface supporting multiple AI model providers in a single session',
       'Custom persona engine: define AI behaviour, tone, and attached knowledge bases',
@@ -120,8 +120,8 @@ const projects: ProjectDetail[] = [
     title:       'Hardball Smokehouse',
     category:    'Hospitality · Web App',
     tagline:     'Caribbean flavours, served online.',
-    description: 'A full-featured hospitality web application for a Caribbean smokehouse restaurant. Beyond a marketing site — includes a complete online reservation system, events and vacancies board, full admin dashboard, and newsletter marketing tools.',
-    challenge:   'Hospitality clients need simplicity on the front and power on the back. The challenge was building a system non-technical staff could confidently manage day-to-day — menus, events, bookings — while delivering a polished customer-facing experience.',
+    description: 'A full-featured hospitality web application for a Caribbean smokehouse restaurant. Beyond a marketing site, it includes a complete online reservation system, events and vacancies board, full admin dashboard, and newsletter marketing tools.',
+    challenge:   'Hospitality clients need simplicity on the front and power on the back. The challenge was building a system non-technical staff could confidently manage day-to-day (menus, events, bookings) while delivering a polished customer-facing experience.',
     highlights: [
       'Online reservation booking system with availability management',
       'Events and vacancies board with full admin CRUD controls',
@@ -628,7 +628,7 @@ export default function AllProjectsPage() {
             lineHeight: 1.7,
             margin:     '0 0 48px',
           }}>
-            Every product I've designed, built, and shipped — from full SaaS platforms
+            Every product I've designed, built, and shipped. From full SaaS platforms
             to hospitality systems. Each built solo with a focus on scalability, clean
             architecture, and real-world usability.
           </p>
