@@ -115,8 +115,8 @@ export default function TravelingCard() {
     const flip1Start = heroExit * 0.60;
     const flip1End   = heroExit;
 
-    const flip2Start = servicesExit * 0.88;
-    const flip2End   = Math.min(servicesExit + 0.09, 1.0);
+    const flip2Start = servicesExit * 0.90;
+    const flip2End   = Math.min(servicesExit + 0.06, 1.0); // completes early in About Me scroll
 
     if (p <= flip1Start) return 0;
     if (p <= flip1End)   return lerp(p, flip1Start, flip1End, 0, 180);
@@ -129,13 +129,11 @@ export default function TravelingCard() {
   const rawTilt = useTransform(scrollYProgress, [0, 0.5, 1], [0, 6, 3]);
 
   // ── Card opacity ───────────────────────────────────────────
-  // Stays fully visible throughout hero, services, and About Me.
-  // Snaps out quickly (3% scroll) right as About Me ends — before Experience is visible.
+  // Fully visible through hero, services, and About Me.
+  // Snaps to 0 the instant About Me ends — no fade, sharp cutoff.
   const cardOpacity = useTransform(scrollYProgress, (p) => {
     const { aboutExit } = breaksRef.current;
-    const fadeStart = aboutExit - 0.005;              // just as About Me finishes
-    const fadeEnd   = Math.min(aboutExit + 0.03, 1.0); // fades out within 3% — tight snap
-    return lerp(p, fadeStart, fadeEnd, 1, 0);
+    return p < aboutExit ? 1 : 0;
   });
 
   // Springs for fluid feel
