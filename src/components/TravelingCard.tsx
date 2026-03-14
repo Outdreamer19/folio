@@ -52,20 +52,18 @@ function getCardSize(vw: number) {
 
 // ── Component ─────────────────────────────────────────────────
 export default function TravelingCard() {
-  const { scrollYProgress } = useScroll(); // full-page scroll 0 → 1
+  const { scrollYProgress } = useScroll();
 
   // ── Responsive card dimensions ────────────────────────────
   const [card, setCard] = useState(() => getCardSize(window.innerWidth));
-
   useLayoutEffect(() => {
     const onResize = () => setCard(getCardSize(window.innerWidth));
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // ── Scroll breakpoints & right-column offset ──────────────
-  // Stored in a ref so the transform functions always see the latest values.
-  const breaksRef    = useRef({ heroExit: 0.32, servicesExit: 0.62, aboutExit: 0.85 });
+  // ── Scroll breakpoints ────────────────────────────────────
+  const breaksRef      = useRef({ heroExit: 0.18, servicesExit: 0.42, aboutExit: 0.62 });
   const rightOffsetRef = useRef(285);
 
   useLayoutEffect(() => {
@@ -88,10 +86,7 @@ export default function TravelingCard() {
         aboutExit:    (heroH + servicesH + aboutH) / totalScroll,
       };
 
-      // Right-column center ≈ viewport_center + 20.5% vw
-      rightOffsetRef.current = Math.round(
-        Math.min(window.innerWidth * 0.205, 300)
-      );
+      rightOffsetRef.current = Math.round(Math.min(window.innerWidth * 0.205, 300));
     };
 
     const id = requestAnimationFrame(calc);
@@ -99,45 +94,46 @@ export default function TravelingCard() {
     return () => { cancelAnimationFrame(id); window.removeEventListener('resize', calc); };
   }, []);
 
-  // ── Card X (horizontal position) ──────────────────────────
-  // 0 = centered in hero; rightOffset = right column during services/about
+  // ── Card X ────────────────────────────────────────────────
+  // Moves from center (0) → right column during last 40% of hero
   const rawX = useTransform(scrollYProgress, (p) => {
     const { heroExit } = breaksRef.current;
     return lerp(p, heroExit * 0.60, heroExit, 0, rightOffsetRef.current);
   });
 
-  // ── Card rotateY ───────────────────────────────────────────
-  // Flip 1 (portrait → workspace): last 40% of hero scroll   (0° → 180°)
-  // Flip 2 (workspace → portrait): near services→about border (180° → 360°)
+  // ── Card rotateY ─────────────────────────────────────────
+  // Flip 1 portrait→workspace: last 40% of hero (0° → 180°)
+  // Flip 2 workspace→portrait: WITHIN Services section, completes well before About Me (180° → 360°)
   const rawRotateY = useTransform(scrollYProgress, (p) => {
     const { heroExit, servicesExit } = breaksRef.current;
 
     const flip1Start = heroExit * 0.60;
     const flip1End   = heroExit;
 
-    const flip2Start = servicesExit * 0.90;
-    const flip2End   = Math.min(servicesExit + 0.06, 1.0); // completes early in About Me scroll
+    // Flip 2 entirely inside Services — done before About Me is ever reached
+    const flip2Start = heroExit + (servicesExit - heroExit) * 0.35;
+    const flip2End   = heroExit + (servicesExit - heroExit) * 0.80;
 
     if (p <= flip1Start) return 0;
     if (p <= flip1End)   return lerp(p, flip1Start, flip1End, 0, 180);
     if (p <= flip2Start) return 180;
     if (p <= flip2End)   return lerp(p, flip2Start, flip2End, 180, 360);
-    return 360;
+    return 360; // portrait face showing from here on
   });
 
   // Subtle organic tilt
-  const rawTilt = useTransform(scrollYProgress, [0, 0.5, 1], [0, 6, 3]);
+  const rawTilt = useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 2]);
 
-  // ── Card opacity ───────────────────────────────────────────
-  // Fully visible through hero, services, and About Me.
-  // Snaps to 0 the instant About Me ends — no fade, sharp cutoff.
+  // ── Card opacity ──────────────────────────────────────────
+  // Fully visible (1) throughout hero, services and About Me.
+  // Snaps to 0 the instant About Me ends — no fade, hard cutoff.
   const cardOpacity = useTransform(scrollYProgress, (p) => {
     const { aboutExit } = breaksRef.current;
     return p < aboutExit ? 1 : 0;
   });
 
-  // Springs for fluid feel
-  const rotateY = useSpring(rawRotateY, { bounce: 0, duration: 950 });
+  // Faster spring on rotateY so it settles quickly inside Services
+  const rotateY = useSpring(rawRotateY, { bounce: 0, duration: 500 });
   const tilt    = useSpring(rawTilt,    { bounce: 0, duration: 1000 });
 
   // "Hi" bubble fades out as card starts moving right
@@ -147,24 +143,26 @@ export default function TravelingCard() {
   const halfH = card.h / 2;
 
   return (
+    // Entrance: scale up only — opacity is entirely controlled by cardOpacity motion value
+    // (do NOT put opacity in animate — it would permanently override the motion value)
     <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
       transition={{ type: 'spring', bounce: 0, duration: 1, delay: 0.5 }}
       style={{
         position:      'fixed',
         left:          '50%',
         top:           '50%',
-        marginLeft:    -halfW,   // dynamically centered on card width
-        marginTop:     -halfH,   // dynamically centered on card height
-        x:             rawX,     // scroll-driven rightward shift
+        marginLeft:    -halfW,
+        marginTop:     -halfH,
+        x:             rawX,
         rotate:        tilt,
-        opacity:       cardOpacity,
+        opacity:       cardOpacity,   // ← sole controller of opacity
         zIndex:        50,
         pointerEvents: 'none',
       }}
     >
-      {/* Perspective wrapper — sized to current card dimensions */}
+      {/* Perspective wrapper */}
       <div style={{ width: card.w, height: card.h, perspective: '1200px', position: 'relative' }}>
 
         <motion.div
@@ -194,7 +192,7 @@ export default function TravelingCard() {
             />
           </div>
 
-          {/* ── Back face — workspace (pre-rotated 180° around Y) ── */}
+          {/* ── Back face — workspace (pre-rotated 180°) ── */}
           <div style={{
             backfaceVisibility:       'hidden',
             WebkitBackfaceVisibility: 'hidden',
@@ -212,7 +210,7 @@ export default function TravelingCard() {
           </div>
         </motion.div>
 
-        {/* ── "Hi" bubble — visible only in hero ── */}
+        {/* ── "Hi" bubble — hero only ── */}
         <motion.div
           style={{
             opacity:         hiOpacity,
