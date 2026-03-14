@@ -6,6 +6,26 @@
   --color-text: rgb(48, 48, 48);
   --color-accent: rgb(94, 103, 230);
   --color-green: rgb(11, 222, 102);
+
+  /* Aurora gradient color tokens */
+  --white:       #ffffff;
+  --black:       #000000;
+  --transparent: transparent;
+  --blue-300:    rgb(147, 197, 253);
+  --blue-400:    rgb(96,  165, 250);
+  --blue-500:    rgb(59,  130, 246);
+  --indigo-300:  rgb(165, 180, 252);
+  --violet-200:  rgb(221, 214, 254);
+}
+
+/* Aurora animation — used by aurora-background.tsx */
+@keyframes aurora {
+  from { background-position: 50% 50%, 50% 50%; }
+  to   { background-position: 350% 50%, 350% 50%; }
+}
+
+.animate-aurora {
+  animation: aurora 60s linear infinite;
 }
 
 * {

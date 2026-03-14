@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import Navbar from './Navbar';
 import { ParticleTextEffect } from '@/components/ui/particle-text-effect';
+import { AuroraLayer } from '@/components/ui/aurora-background';
 
 const springIn = { type: 'spring' as const, bounce: 0, duration: 1, delay: 0.3 };
 
@@ -20,6 +21,9 @@ export default function HeroSection() {
         justifyContent:  'center',
       }}
     >
+      {/* Aurora background — subtle animated light sweep, top-right quadrant */}
+      <AuroraLayer opacity={0.18} showRadialGradient />
+
       {/* Floating navbar */}
       <Navbar />
 
