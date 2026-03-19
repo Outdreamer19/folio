@@ -12,7 +12,7 @@ export interface Project {
   liveUrl: string;
   githubUrl: string;
   featured: boolean;
-  color: string; // accent colour for the card
+  color: string;
 }
 
 export const projects: Project[] = [
@@ -87,6 +87,30 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/Outdreamer19/hardball',
     featured: true,
     color: 'rgb(239, 68, 68)',
+  },
+  {
+    id: 4,
+    number: '04',
+    title: 'Proposal AI',
+    category: 'AI Tool · Full Stack',
+    tagline: 'Win more clients. Stop writing proposals.',
+    description:
+      'I built Proposal AI as a full-stack SaaS tool that generates professional freelance proposals in seconds using the OpenAI API. It features a full marketing landing page, three tone modes, PDF download, and a structured output — built with Laravel, Vue 3, and GPT-4o mini.',
+    highlights: [
+      'Real OpenAI GPT-4o mini integration with structured prompt engineering',
+      'Three tone modes: Formal, Friendly, Technical — one click to match your client',
+      'Full marketing landing page: hero, features, how-it-works, pricing, testimonials',
+      'PDF generation & copy-to-clipboard output',
+      'Glassmorphism UI with animated blob glows, dot grid & shimmer skeletons',
+      'SaaS-ready architecture — Free tier + Pro £9/month via Stripe',
+    ],
+    tech: ['Laravel', 'Vue 3', 'Inertia.js', 'TypeScript', 'Tailwind CSS', 'OpenAI API', 'PHP', 'MySQL'],
+    year: '2025',
+    status: 'live',
+    liveUrl: 'https://shanebell.dev/proposal',
+    githubUrl: 'https://github.com/Outdreamer19/proposal-ai',
+    featured: true,
+    color: 'rgb(99, 102, 241)',
   },
 ];
 
