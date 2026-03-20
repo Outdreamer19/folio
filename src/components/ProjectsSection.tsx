@@ -1,508 +1,533 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, useInView, type Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { projects } from '../data/projects';
 import type { Project } from '../data/projects';
 
-// ── Icons ─────────────────────────────────────────────────────
-function ExternalLinkIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-      <polyline points="15 3 21 3 21 9"/>
-      <line x1="10" y1="14" x2="21" y2="3"/>
-    </svg>
-  );
-}
-function GithubIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-    </svg>
-  );
-}
-function ArrowRightIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="5" y1="12" x2="19" y2="12"/>
-      <polyline points="12 5 19 12 12 19"/>
-    </svg>
-  );
-}
-
-// ── Status badge ──────────────────────────────────────────────
-function StatusBadge({ status }: { status: Project['status'] }) {
-  const config = {
-    live:        { label: 'Live',        dot: 'rgb(11, 222, 102)',  text: 'rgb(22, 163, 74)' },
-    beta:        { label: 'Beta',        dot: 'rgb(245, 158, 11)', text: 'rgb(161, 98, 7)' },
-    'in-progress': { label: 'In Progress', dot: 'rgb(99, 102, 241)', text: 'rgb(67, 56, 202)' },
-  }[status];
+export function ProjectsSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
-    <span style={{
-      display:         'inline-flex',
-      alignItems:      'center',
-      gap:             5,
-      fontSize:        11,
-      fontFamily:      "'Inter', sans-serif",
-      fontWeight:      500,
-      color:           config.text,
-      backgroundColor: `${config.dot}18`,
-      border:          `1px solid ${config.dot}40`,
-      borderRadius:    999,
-      padding:         '3px 10px',
-      letterSpacing:   '0.02em',
-    }}>
-      <span style={{
-        width:           5,
-        height:          5,
-        borderRadius:    '50%',
-        backgroundColor: config.dot,
-        boxShadow:       `0 0 5px ${config.dot}`,
-        flexShrink:      0,
-      }} />
-      {config.label}
-    </span>
-  );
-}
+    <>
+      <style>{`
+        .projects-bento {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+        }
+        @media (max-width: 768px) {
+          .projects-bento {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
 
-// ── Tech badge ────────────────────────────────────────────────
-function TechBadge({ name }: { name: string }) {
-  return (
-    <span style={{
-      fontSize:        11,
-      fontFamily:      "'Inter', sans-serif",
-      fontWeight:      500,
-      color:           'rgb(100, 100, 110)',
-      backgroundColor: 'rgba(0,0,0,0.04)',
-      border:          '1px solid rgba(0,0,0,0.08)',
-      borderRadius:    6,
-      padding:         '3px 9px',
-      letterSpacing:   '0.01em',
-      whiteSpace:      'nowrap',
-    }}>
-      {name}
-    </span>
-  );
-}
-
-// ── Project card ──────────────────────────────────────────────
-function ProjectCard({ project, index, large = false }: {
-  project: Project;
-  index: number;
-  large?: boolean;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.55, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      whileHover="hover"
-      style={{ height: '100%' }}
-    >
-      {/* Card */}
-      <motion.div
-        variants={{
-          hover: { y: -4, boxShadow: '0 16px 48px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06)' },
-        }}
-        transition={{ type: 'spring', bounce: 0, duration: 0.35 }}
+      <section
+        ref={ref}
         style={{
-          backgroundColor: '#ffffff',
-          border:          '1px solid rgba(0,0,0,0.08)',
-          borderRadius:    16,
-          padding:         large ? '32px' : '24px',
-          display:         'flex',
-          flexDirection:   'column',
-          gap:             large ? 20 : 16,
-          height:          '100%',
-          boxSizing:       'border-box',
-          position:        'relative',
-          overflow:        'hidden',
-          boxShadow:       '0 1px 4px rgba(0,0,0,0.04)',
-          transition:      'border-color 0.25s ease',
-          cursor:          'default',
-        }}
-        onMouseEnter={e => {
-          (e.currentTarget as HTMLDivElement).style.borderColor = `${project.color}50`;
-        }}
-        onMouseLeave={e => {
-          (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(0,0,0,0.08)';
+          background: 'rgb(10, 10, 16)',
+          padding: 'clamp(80px, 10vw, 120px) clamp(20px, 5vw, 64px)',
         }}
       >
-        {/* Top accent bar — appears on hover via CSS pseudo but we'll use a motion div */}
-        <motion.div
-          variants={{ hover: { scaleX: 1 }, initial: { scaleX: 0 } }}
-          initial={{ scaleX: 0 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
+        <div
           style={{
-            position:        'absolute',
-            top:             0,
-            left:            0,
-            right:           0,
-            height:          2,
-            backgroundColor: project.color,
-            transformOrigin: 'left',
+            maxWidth: '1280px',
+            margin: '0 auto',
           }}
-        />
-
-        {/* Header row */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <span style={{
-              fontFamily:    "'Inter', sans-serif",
-              fontSize:      11,
-              fontWeight:    500,
-              color:         'rgba(0,0,0,0.3)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-            }}>
-              {project.number}
-            </span>
-            <h3 style={{
-              fontFamily:    "'Antonio', sans-serif",
-              fontSize:      large ? 28 : 22,
-              fontWeight:    700,
-              color:         'rgb(48, 48, 48)',
-              textTransform: 'uppercase',
-              letterSpacing: '-0.01em',
-              margin:        0,
-              lineHeight:    1.1,
-            }}>
-              {project.title}
-            </h3>
-          </div>
-          <StatusBadge status={project.status} />
-        </div>
-
-        {/* Category */}
-        <span style={{
-          fontFamily:    "'Inter', sans-serif",
-          fontSize:      12,
-          fontWeight:    500,
-          color:         project.color,
-          letterSpacing: '0.04em',
-          textTransform: 'uppercase',
-        }}>
-          {project.category}
-        </span>
-
-        {/* Description */}
-        <p style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize:   large ? 15 : 13.5,
-          fontWeight: 300,
-          color:      'rgb(90, 90, 100)',
-          lineHeight: 1.65,
-          margin:     0,
-          flex:       1,
-        }}>
-          {project.description}
-        </p>
-
-        {/* Highlights (large card only) */}
-        {large && (
-          <ul style={{
-            display:       'flex',
-            flexDirection: 'column',
-            gap:           8,
-            paddingLeft:   0,
-            listStyle:     'none',
-            margin:        0,
-          }}>
-            {project.highlights.slice(0, 4).map((h, i) => (
-              <li key={i} style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize:   13,
-                fontWeight: 300,
-                color:      'rgb(80, 80, 90)',
-                display:    'flex',
-                alignItems: 'flex-start',
-                gap:        8,
-                lineHeight: 1.5,
-              }}>
-                <span style={{
-                  width:           4,
-                  height:          4,
-                  borderRadius:    '50%',
-                  backgroundColor: project.color,
-                  flexShrink:      0,
-                  marginTop:       6,
-                }} />
-                {h}
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {/* Tech badges */}
-        <div style={{
-          display:   'flex',
-          flexWrap:  'wrap',
-          gap:       6,
-          marginTop: 'auto',
-          paddingTop: 4,
-        }}>
-          {(large ? project.tech : project.tech.slice(0, 5)).map((t) => (
-            <TechBadge key={t} name={t} />
-          ))}
-          {!large && project.tech.length > 5 && (
-            <TechBadge name={`+${project.tech.length - 5}`} />
-          )}
-        </div>
-
-        {/* Footer: year + links */}
-        <div style={{
-          display:        'flex',
-          alignItems:     'center',
-          justifyContent: 'space-between',
-          paddingTop:     8,
-          borderTop:      '1px solid rgba(0,0,0,0.06)',
-        }}>
-          <span style={{
-            fontFamily:    "'Inter', sans-serif",
-            fontSize:      12,
-            fontWeight:    400,
-            color:         'rgba(0,0,0,0.35)',
-            letterSpacing: '0.02em',
-          }}>
-            {project.year}
-          </span>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <motion.a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.08, color: project.color }}
-              style={{
-                display:         'inline-flex',
-                alignItems:      'center',
-                gap:             6,
-                fontSize:        12,
-                fontFamily:      "'Inter', sans-serif",
-                fontWeight:      500,
-                color:           'rgb(48, 48, 48)',
-                textDecoration:  'none',
-                padding:         '6px 12px',
-                borderRadius:    8,
-                backgroundColor: 'rgba(0,0,0,0.03)',
-                border:          '1px solid rgba(0,0,0,0.07)',
-                transition:      'color 0.2s ease',
-              }}
-              title="View live site"
-            >
-              <ExternalLinkIcon />
-              Live
-            </motion.a>
-            <motion.a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.08, color: project.color }}
-              style={{
-                display:         'inline-flex',
-                alignItems:      'center',
-                gap:             6,
-                fontSize:        12,
-                fontFamily:      "'Inter', sans-serif",
-                fontWeight:      500,
-                color:           'rgb(48, 48, 48)',
-                textDecoration:  'none',
-                padding:         '6px 12px',
-                borderRadius:    8,
-                backgroundColor: 'rgba(0,0,0,0.03)',
-                border:          '1px solid rgba(0,0,0,0.07)',
-                transition:      'color 0.2s ease',
-              }}
-              title="View source"
-            >
-              <GithubIcon />
-              Code
-            </motion.a>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-// ── Section ───────────────────────────────────────────────────
-export default function ProjectsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const headingInView = useInView(sectionRef, { once: true, margin: '-80px' });
-
-  const [featured, ...rest] = projects;
-
-  return (
-    <section
-      id="projects"
-      ref={sectionRef}
-      style={{
-        width:           '100%',
-        backgroundColor: '#ffffff',
-        padding:         '100px 40px 120px',
-        borderTop:       '1px solid rgba(0,0,0,0.06)',
-      }}
-    >
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-
-        {/* ── Section header ── */}
-        <div style={{
-          display:        'flex',
-          alignItems:     'flex-end',
-          justifyContent: 'space-between',
-          marginBottom:   64,
-          flexWrap:       'wrap',
-          gap:            24,
-        }}>
-          <motion.div
-            animate={headingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            initial={{ opacity: 0, y: 24 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* Section Header */}
+          <div
+            style={{
+              marginBottom: 'clamp(48px, 8vw, 80px)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              gap: '24px',
+              flexWrap: 'wrap',
+            }}
           >
-            {/* Overline */}
-            <div style={{
-              display:        'flex',
-              alignItems:     'center',
-              gap:            10,
-              marginBottom:   12,
-            }}>
-              <div style={{
-                width:           24,
-                height:          1,
-                backgroundColor: 'rgb(94, 103, 230)',
-              }} />
-              <span style={{
-                fontFamily:    "'Inter', sans-serif",
-                fontSize:      11,
-                fontWeight:    500,
-                color:         'rgb(94, 103, 230)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-              }}>
-                Selected work
-              </span>
-            </div>
-            <h2 style={{
-              fontFamily:    "'Antonio', sans-serif",
-              fontSize:      'clamp(36px, 4vw, 52px)',
-              fontWeight:    700,
-              color:         'rgb(48, 48, 48)',
-              textTransform: 'uppercase',
-              lineHeight:    1.05,
-              letterSpacing: '-0.01em',
-              margin:        0,
-            }}>
-              PROJECTS
-            </h2>
-          </motion.div>
+            <div style={{ flex: 1, minWidth: '300px' }}>
+              {/* Overline */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  marginBottom: '16px',
+                }}
+              >
+                <div
+                  style={{
+                    width: '40px',
+                    height: '2px',
+                    background: 'rgb(94, 103, 230)',
+                  }}
+                />
+                <span
+                  style={{
+                    fontSize: '11px',
+                    fontFamily: 'Inter, sans-serif',
+                    color: 'rgb(94, 103, 230)',
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
+                    fontWeight: 500,
+                  }}
+                >
+                  SELECTED WORK
+                </span>
+              </div>
 
-          {/* View all link */}
-          <motion.div
-            animate={headingInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-            initial={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              {/* Heading */}
+              <h2
+                style={{
+                  fontSize: 'clamp(52px, 7vw, 96px)',
+                  fontFamily: 'Antonio, sans-serif',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  textTransform: 'uppercase',
+                  margin: '0 0 16px 0',
+                  lineHeight: 1.1,
+                }}
+              >
+                PROJECTS
+              </h2>
+
+              {/* Subtext */}
+              <p
+                style={{
+                  fontSize: '16px',
+                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: 300,
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  margin: 0,
+                  maxWidth: '500px',
+                }}
+              >
+                Four products shipped. Zero agencies. All mine.
+              </p>
+            </div>
+
+            {/* View All Link */}
+            <Link
+              to="/projects"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '12px 24px',
+                fontSize: '14px',
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 500,
+                color: 'rgba(255, 255, 255, 0.7)',
+                background: 'transparent',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '24px',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                target.style.color = '#ffffff';
+              }}
+              onMouseLeave={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                target.style.color = 'rgba(255, 255, 255, 0.7)';
+              }}
+            >
+              View all →
+            </Link>
+          </div>
+
+          {/* Projects Grid */}
+          <div className="projects-bento">
+            {projects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} isInView={isInView} />
+            ))}
+          </div>
+
+          {/* View All Projects CTA */}
+          <div
+            style={{
+              marginTop: 'clamp(60px, 10vw, 100px)',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
           >
             <Link
               to="/projects"
-              style={{ textDecoration: 'none' }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '16px 48px',
+                fontSize: '16px',
+                fontFamily: 'Antonio, sans-serif',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                color: '#ffffff',
+                background: 'transparent',
+                border: '2px solid rgba(255, 255, 255, 0.15)',
+                borderRadius: '40px',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                target.style.background = 'rgba(255, 255, 255, 0.05)';
+              }}
+              onMouseLeave={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                target.style.background = 'transparent';
+              }}
             >
-              <motion.span
-                whileHover="hover"
-                style={{
-                  display:     'inline-flex',
-                  alignItems:  'center',
-                  gap:         8,
-                  fontFamily:  "'Inter', sans-serif",
-                  fontSize:    14,
-                  fontWeight:  500,
-                  color:       'rgb(48, 48, 48)',
-                  cursor:      'pointer',
-                }}
-              >
-                View all projects
-                <motion.span
-                  variants={{ hover: { x: 4 } }}
-                  transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
-                  style={{ display: 'flex', alignItems: 'center', color: 'rgb(94, 103, 230)' }}
-                >
-                  <ArrowRightIcon />
-                </motion.span>
-              </motion.span>
+              VIEW ALL PROJECTS
             </Link>
-          </motion.div>
+          </div>
         </div>
+      </section>
+    </>
+  );
+}
 
-        {/* ── Project grid ── */}
-        {/*  Layout: featured large card on left, 2 smaller cards stacked on right */}
-        <div style={{
-          display:             'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gridTemplateRows:    'auto',
-          gap:                 20,
-          alignItems:          'stretch',
-        }}>
-          {/* Featured — spans 1 column, full height */}
-          <div style={{ gridRow: '1 / 3', display: 'flex', flexDirection: 'column' }}>
-            <ProjectCard project={featured} index={0} large={true} />
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+  isInView: boolean;
+}
+
+function ProjectCard({ project, index, isInView }: ProjectCardProps) {
+  const [, setIsHovered] = useState(false);
+
+  const cardVariants: Variants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: 'easeOut' as const,
+        delay: isInView ? index * 0.12 : 0,
+      },
+    },
+  };
+
+  return (
+    <motion.div
+      variants={cardVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-60px' }}
+      style={{
+        position: 'relative',
+      }}
+    >
+      <Link
+        to={`/projects/${project.slug}`}
+        style={{
+          textDecoration: 'none',
+          display: 'block',
+          height: '100%',
+        }}
+      >
+        <motion.div
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          data-cursor="project"
+          data-cursor-color={project.color}
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: `1px solid rgba(255, 255, 255, 0.07)`,
+            borderRadius: '20px',
+            overflow: 'hidden',
+            transition: 'all 0.3s ease',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            cursor: 'pointer',
+          }}
+          whileHover={{
+            borderColor: `${project.color}60`,
+            boxShadow: `0 0 40px ${project.color}20`,
+          }}
+        >
+          {/* Screenshot Area */}
+          <div
+            style={{
+              position: 'relative',
+              overflow: 'hidden',
+              height: '260px',
+              backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            }}
+          >
+            <motion.img
+              src={project.screenshots.desktop}
+              alt={project.title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'top',
+              }}
+              whileHover={{
+                scale: 1.04,
+              }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(to bottom, transparent 40%, rgb(10,10,16) 100%)',
+                pointerEvents: 'none',
+              }}
+            />
           </div>
 
-          {/* Rest — 2 smaller cards */}
-          {rest.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i + 1} large={false} />
-          ))}
-        </div>
-
-        {/* ── View all CTA ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.55, delay: 0.3 }}
-          style={{ textAlign: 'center', marginTop: 56 }}
-        >
-          <Link to="/projects" style={{ textDecoration: 'none' }}>
-            <motion.button
-              whileHover={{
-                backgroundColor: 'rgb(48, 48, 48)',
-                borderColor:     'rgb(48, 48, 48)',
-              }}
-              whileTap={{ scale: 0.97 }}
+          {/* Card Body */}
+          <div
+            style={{
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              justifyContent: 'space-between',
+            }}
+          >
+            {/* Project Number */}
+            <div
               style={{
-                display:         'inline-flex',
-                alignItems:      'center',
-                gap:             10,
-                fontFamily:      "'Antonio', sans-serif",
-                fontSize:        13,
-                fontWeight:      700,
-                textTransform:   'uppercase',
-                letterSpacing:   '0.1em',
-                color:           'rgb(48, 48, 48)',
-                backgroundColor: 'transparent',
-                border:          '1px solid rgba(0,0,0,0.18)',
-                borderRadius:    999,
-                padding:         '13px 32px',
-                cursor:          'pointer',
-                transition:      'background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease',
-              }}
-              onMouseEnter={e => {
-                const btn = e.currentTarget;
-                btn.style.color = 'white';
-              }}
-              onMouseLeave={e => {
-                const btn = e.currentTarget;
-                btn.style.color = 'rgb(48, 48, 48)';
+                fontSize: '11px',
+                fontFamily: 'Inter, sans-serif',
+                color: 'rgba(255, 255, 255, 0.3)',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
               }}
             >
-              View all projects
-              <ArrowRightIcon />
-            </motion.button>
-          </Link>
+              PROJECT {String(index + 1).padStart(2, '0')}
+            </div>
+
+            {/* Title */}
+            <h3
+              style={{
+                fontSize: '28px',
+                fontFamily: 'Antonio, sans-serif',
+                fontWeight: 700,
+                color: '#ffffff',
+                textTransform: 'uppercase',
+                margin: '0 0 12px 0',
+                lineHeight: 1.2,
+              }}
+            >
+              {project.title}
+            </h3>
+
+            {/* Category */}
+            <div
+              style={{
+                fontSize: '12px',
+                fontFamily: 'Inter, sans-serif',
+                color: project.color,
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                fontWeight: 600,
+                marginBottom: '16px',
+              }}
+            >
+              {project.category}
+            </div>
+
+            {/* Highlights */}
+            {project.highlights && project.highlights.length > 0 && (
+              <ul
+                style={{
+                  listStyle: 'none',
+                  margin: '0 0 20px 0',
+                  padding: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px',
+                }}
+              >
+                {project.highlights.map((highlight, i) => (
+                  <li
+                    key={i}
+                    style={{
+                      fontSize: '13px',
+                      fontFamily: 'Inter, sans-serif',
+                      color: 'rgba(255, 255, 255, 0.6)',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '8px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        background: project.color,
+                        borderRadius: '50%',
+                        marginTop: '5px',
+                        flexShrink: 0,
+                      }}
+                    />
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {/* Tech Pills */}
+            {project.tech && project.tech.length > 0 && (
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '8px',
+                  marginBottom: '20px',
+                }}
+              >
+                {project.tech.slice(0, 4).map((tech, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      fontSize: '11px',
+                      fontFamily: 'Inter, sans-serif',
+                      padding: '6px 12px',
+                      background: `${project.color}15`,
+                      color: project.color,
+                      borderRadius: '20px',
+                      textTransform: 'capitalize',
+                      border: `1px solid ${project.color}30`,
+                    }}
+                  >
+                    {tech}
+                  </span>
+                ))}
+                {project.tech.length > 4 && (
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      fontFamily: 'Inter, sans-serif',
+                      padding: '6px 12px',
+                      color: 'rgba(255, 255, 255, 0.5)',
+                    }}
+                  >
+                    +{project.tech.length - 4} more
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Bottom Row */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingTop: '16px',
+                borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '12px',
+                  fontFamily: 'Inter, sans-serif',
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                }}
+              >
+                {project.year}
+              </span>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '12px',
+                }}
+              >
+                {project.liveUrl && (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      fontSize: '12px',
+                      fontFamily: 'Antonio, sans-serif',
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      color: project.color,
+                      textDecoration: 'none',
+                      padding: '6px 12px',
+                      border: `1px solid ${project.color}40`,
+                      borderRadius: '16px',
+                      transition: 'all 0.2s ease',
+                      background: 'transparent',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => {
+                      const target = e.currentTarget as HTMLElement;
+                      target.style.background = `${project.color}15`;
+                      target.style.borderColor = `${project.color}70`;
+                    }}
+                    onMouseLeave={(e) => {
+                      const target = e.currentTarget as HTMLElement;
+                      target.style.background = 'transparent';
+                      target.style.borderColor = `${project.color}40`;
+                    }}
+                  >
+                    LIVE ↗
+                  </a>
+                )}
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      fontSize: '12px',
+                      fontFamily: 'Antonio, sans-serif',
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      color: 'rgba(255, 255, 255, 0.6)',
+                      textDecoration: 'none',
+                      padding: '6px 12px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      borderRadius: '16px',
+                      transition: 'all 0.2s ease',
+                      background: 'transparent',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => {
+                      const target = e.currentTarget as HTMLElement;
+                      target.style.background = 'rgba(255, 255, 255, 0.05)';
+                      target.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                      target.style.color = '#ffffff';
+                    }}
+                    onMouseLeave={(e) => {
+                      const target = e.currentTarget as HTMLElement;
+                      target.style.background = 'transparent';
+                      target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                      target.style.color = 'rgba(255, 255, 255, 0.6)';
+                    }}
+                  >
+                    CODE
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
         </motion.div>
-      </div>
-    </section>
+      </Link>
+    </motion.div>
   );
 }
