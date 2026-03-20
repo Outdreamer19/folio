@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 // ── Social icon components ─────────────────────────────────────
 function XIcon() {
   return (
@@ -26,10 +28,10 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   const navLinks = [
-    { label: 'Work',    href: '#services'  },
-    { label: 'About',   href: '#about'     },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Contact', href: '#contact'   },
+    { label: 'Work',     href: '#services', to: null     },
+    { label: 'About',    href: '#about',    to: null     },
+    { label: 'Projects', href: null,        to: '/projects' },
+    { label: 'Contact',  href: '#contact',  to: null     },
   ];
 
   const socialLinks = [
@@ -84,24 +86,43 @@ export default function Footer() {
 
           {/* Nav */}
           <nav style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'center' }}>
-            {navLinks.map(({ label, href }) => (
-              <a
-                key={label}
-                href={href}
-                style={{
-                  fontFamily:     "'Inter', sans-serif",
-                  fontSize:       14,
-                  fontWeight:     400,
-                  color:          'rgba(255,255,255,0.55)',
-                  textDecoration: 'none',
-                  transition:     'color 0.2s',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
-              >
-                {label}
-              </a>
-            ))}
+            {navLinks.map(({ label, href, to }) =>
+              to ? (
+                <Link
+                  key={label}
+                  to={to}
+                  style={{
+                    fontFamily:     "'Inter', sans-serif",
+                    fontSize:       14,
+                    fontWeight:     400,
+                    color:          'rgba(255,255,255,0.55)',
+                    textDecoration: 'none',
+                    transition:     'color 0.2s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
+                >
+                  {label}
+                </Link>
+              ) : (
+                <a
+                  key={label}
+                  href={href!}
+                  style={{
+                    fontFamily:     "'Inter', sans-serif",
+                    fontSize:       14,
+                    fontWeight:     400,
+                    color:          'rgba(255,255,255,0.55)',
+                    textDecoration: 'none',
+                    transition:     'color 0.2s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#ffffff')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
+                >
+                  {label}
+                </a>
+              )
+            )}
           </nav>
 
           {/* Social icons */}
