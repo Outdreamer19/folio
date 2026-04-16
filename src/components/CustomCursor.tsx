@@ -96,8 +96,8 @@ export default function CustomCursor() {
 
   const ringSize = isHoveringProject ? 72 : 40;
   const dotScale = isHoveringInteractive ? 1.5 : 1;
-  const ringBackgroundColor = isHoveringProject ? 'rgba(255,255,255,0.08)' : 'transparent';
-  const ringBorderColor = isHoveringProject && projectColor ? projectColor : 'rgba(255,255,255,0.5)';
+  const ringBackgroundColor = isHoveringProject ? 'rgba(255,255,255,0.15)' : 'transparent';
+  const ringBorderColor = isHoveringProject && projectColor ? projectColor : '#ffffff';
 
   return (
     <div ref={cursorRef}>
@@ -132,6 +132,7 @@ export default function CustomCursor() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            mixBlendMode: isHoveringProject ? 'normal' : 'difference',
           }}
         >
           {isHoveringProject && (
@@ -176,6 +177,7 @@ export default function CustomCursor() {
             backgroundColor: '#ffffff',
             borderRadius: '50%',
             transform: 'translate(-50%, -50%)',
+            mixBlendMode: 'difference',
           }}
         />
       </motion.div>
