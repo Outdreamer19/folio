@@ -101,6 +101,8 @@ export default function CustomCursor() {
 
   return (
     <div ref={cursorRef}>
+      {/* ── Ring ── mix-blend-mode lives on the outermost fixed element so it
+           blends against actual page content, not a parent stacking context   */}
       <motion.div
         ref={ringRef}
         style={{
@@ -112,6 +114,9 @@ export default function CustomCursor() {
           x: xSpringRing,
           y: ySpringRing,
           opacity: opacity,
+          // blend mode on the same element as position:fixed so it blends
+          // against the viewport, not a trapped stacking context
+          mixBlendMode: isHoveringProject ? 'normal' : 'difference',
         }}
       >
         <motion.div
@@ -132,7 +137,6 @@ export default function CustomCursor() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            mixBlendMode: isHoveringProject ? 'normal' : 'difference',
           }}
         >
           {isHoveringProject && (
@@ -151,6 +155,7 @@ export default function CustomCursor() {
         </motion.div>
       </motion.div>
 
+      {/* ── Dot ── */}
       <motion.div
         style={{
           position: 'fixed',
@@ -161,6 +166,7 @@ export default function CustomCursor() {
           x: xSpringDot,
           y: ySpringDot,
           opacity: opacity,
+          mixBlendMode: 'difference',
         }}
       >
         <motion.div
@@ -177,7 +183,6 @@ export default function CustomCursor() {
             backgroundColor: '#ffffff',
             borderRadius: '50%',
             transform: 'translate(-50%, -50%)',
-            mixBlendMode: 'difference',
           }}
         />
       </motion.div>

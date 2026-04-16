@@ -26,7 +26,7 @@ const STATS: Record<string, Stat[]> = {
     { value: '50+', label: 'Menu Items' },
     { value: '4 wks', label: 'Build Time' },
   ],
-  'proposal-ai': [
+  'pitchfast': [
     { value: '30s', label: 'Per Proposal' },
     { value: '3', label: 'Tone Modes' },
     { value: 'GPT-4o', label: 'Powered' },
@@ -55,7 +55,7 @@ const STEPS: Record<string, Step[]> = {
     { title: 'Customer Frontend', description: 'Designed and built the marketing site with light/dark theme, contact forms and newsletter integration.' },
     { title: 'Deploy + Handoff', description: 'Deployed and handed off with full documentation so non-technical staff can run it independently.' },
   ],
-  'proposal-ai': [
+  'pitchfast': [
     { title: 'Prompt Engineering Research', description: 'Researched and iterated on prompt structures to get AI output that sounds human and actually tailored.' },
     { title: 'Laravel API + OpenAI Integration', description: 'Built the backend with GPT-4o mini integration, tone modifiers and structured prompt injection.' },
     { title: 'Vue Marketing Page', description: 'Built the full marketing landing page: hero, features, how-it-works, pricing and testimonials.' },

@@ -142,12 +142,12 @@ export const projects: Project[] = [
   {
     id: 4,
     number: '04',
-    slug: 'proposal-ai',
-    title: 'Proposal AI',
+    slug: 'pitchfast',
+    title: 'PitchFast',
     category: 'AI Tool · Full Stack',
     tagline: 'Win more clients. Stop writing proposals.',
     description:
-      'I built Proposal AI as a full-stack SaaS tool that generates professional freelance proposals in seconds using the OpenAI API. It features a full marketing landing page, three tone modes, PDF download, and a structured output — built with Laravel, Vue 3, and GPT-4o mini.',
+      'I built PitchFast as a full-stack SaaS tool that generates professional freelance proposals in seconds using the OpenAI API. It features a full marketing landing page, three tone modes, PDF download, and a structured output — built with Laravel, Vue 3, and GPT-4o mini.',
     challenge:
       'Getting the AI to produce proposals that actually sound human and tailored was the hard part. I designed a structured prompt system with tone modifiers (Formal, Friendly, Technical) that shapes the output to match the client context, not just fill a template.',
     highlights: [
@@ -167,7 +167,7 @@ export const projects: Project[] = [
     tech: ['Laravel', 'Vue 3', 'Inertia.js', 'TypeScript', 'Tailwind CSS', 'OpenAI API', 'PHP', 'MySQL'],
     year: '2025',
     status: 'live',
-    liveUrl: 'https://shanebell.dev/proposal',
+    liveUrl: 'https://pitchfast.app',
     githubUrl: 'https://github.com/Outdreamer19/proposal-ai',
     featured: true,
     color: 'rgb(139, 92, 246)',
