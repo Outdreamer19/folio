@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git remote:*)",
+      "Bash(git -C /Users/shanebell/Herd/folio remote -v)",
+      "Bash(git -C /Users/shanebell/Herd/folio fetch origin)",
+      "Bash(git -C /Users/shanebell/Herd/folio log --oneline -5)",
+      "Bash(git -C /Users/shanebell/Herd/folio checkout main)",
+      "Bash(git -C /Users/shanebell/Herd/folio pull origin main)",
+      "Bash(git -C /Users/shanebell/Herd/folio rev-parse --show-toplevel)",
+      "Bash(git -C /Users/shanebell/Herd ls-tree origin/main --name-only)",
+      "Bash(git clone:*)",
+      "Bash(REDESIGN=/Users/shanebell/Documents/cowork/shanebell/folio-redesign/src)",
+      "Bash(FOLIO=/tmp/folio-work)",
+      "Bash(__NEW_LINE_94a8739f8667a64c__ cp:*)",
+      "Bash(cp \"$REDESIGN/components/CustomCursor.tsx\" \"$FOLIO/src/components/CustomCursor.tsx\")",
+      "Bash(cp \"$REDESIGN/components/ProjectsSection.tsx\" \"$FOLIO/src/components/ProjectsSection.tsx\")",
+      "Bash(find /Users/shanebell/Documents/cowork/shanebell/folio-redesign -name *.jpg -o -name *.png -o -name *.webp)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(python3 -c \":*)",
+      "mcp__plugin_playwright_playwright__browser_resize",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "Bash(find /Users/shanebell -name *proposal* -o -name *invoicefeed*)",
+      "Bash(find /Users/shanebell/Downloads /Users/shanebell/Desktop /Users/shanebell/Documents -name *.jpg -o -name *.png -newer /tmp/folio-work)",
+      "Bash(grep -r \"invoicefeed\\\\|InvoiceFeed\" /Users/shanebell/Herd/portfolio/src --include=*.ts --include=*.tsx --include=*.js --include=*.vue -l)",
+      "Bash(find /Users/shanebell/Library -name *.jpg -newer /tmp/folio-work -type f)",
+      "Bash(find /tmp -newer /tmp/folio-work -name *.png -o -name *.jpg -o -name *.webp)",
+      "Bash(sips -g pixelWidth -g pixelHeight '/Users/shanebell/Herd/portfolio/public/img/projects/Invoicefeed/Invoicefeed Landing page.png')",
+      "Bash(gh repo:*)",
+      "Bash(git init:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(npx tsc:*)",
+      "Bash(./node_modules/.bin/tsc --noEmit)"
+    ]
+  }
+}

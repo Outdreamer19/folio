@@ -25,7 +25,7 @@ export default function Navbar() {
           top:                  24,
           left:                 '50%',
           transform:            'translateX(-50%)',
-          zIndex:               50,
+          zIndex:               300,
           background:           'rgba(255,255,255,0.92)',
           backdropFilter:       'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
@@ -141,7 +141,7 @@ export default function Navbar() {
             style={{
               position:        'fixed',
               inset:           0,
-              zIndex:          40,
+              zIndex:          200,
               backgroundColor: 'rgba(6,6,12,0.97)',
               backdropFilter:  'blur(16px)',
               display:         'flex',

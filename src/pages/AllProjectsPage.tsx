@@ -534,7 +534,8 @@ export default function AllProjectsPage() {
         </h1>
 
         <a
-          href="/cv.pdf"
+          href="/Shane_Bell_CV.pdf"
+          download="Shane_Bell_CV.pdf"
           style={{
             padding: '8px 20px',
             background: '#6366f1',
