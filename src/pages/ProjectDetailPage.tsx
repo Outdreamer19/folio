@@ -26,6 +26,12 @@ const STATS: Record<string, Stat[]> = {
     { value: '50+', label: 'Menu Items' },
     { value: '4 wks', label: 'Build Time' },
   ],
+  'shanebell-dev': [
+    { value: '5', label: 'Projects Live' },
+    { value: 'React 19', label: 'Stack' },
+    { value: 'Vercel', label: 'Deployed' },
+    { value: '3 wks', label: 'Build Time' },
+  ],
   'pitchfast': [
     { value: '30s', label: 'Per Proposal' },
     { value: '3', label: 'Tone Modes' },
@@ -54,6 +60,12 @@ const STEPS: Record<string, Step[]> = {
     { title: 'Laravel Backend + Admin', description: 'Built the reservation system, events board and the full admin CRUD dashboard the team uses daily.' },
     { title: 'Customer Frontend', description: 'Designed and built the marketing site with light/dark theme, contact forms and newsletter integration.' },
     { title: 'Deploy + Handoff', description: 'Deployed and handed off with full documentation so non-technical staff can run it independently.' },
+  ],
+  'shanebell-dev': [
+    { title: 'Design Direction', description: 'Settled on a dark, typographic aesthetic with cyan as the accent — prioritising readability and motion over decoration.' },
+    { title: 'Component Architecture', description: 'Built the core components: TravelingCard with spring physics, custom cursor system, animated navbar overlay, and project card grid.' },
+    { title: 'Animation System', description: 'Wired up Framer Motion for scroll-driven entrances, page transitions, the particle text hero and the fullscreen menu stagger.' },
+    { title: 'Polish + Deploy', description: 'Iterated on performance, fixed z-index layering, added mix-blend-mode cursor visibility, then shipped via Vercel with CI/CD on GitHub.' },
   ],
   'pitchfast': [
     { title: 'Prompt Engineering Research', description: 'Researched and iterated on prompt structures to get AI output that sounds human and actually tailored.' },
