@@ -110,23 +110,33 @@ export default function ContactSection() {
       style={{
         width:           '100%',
         backgroundColor: '#ffffff',
-        padding:         'clamp(80px, 10vw, 140px) clamp(24px, 6vw, 96px)',
+        padding:         'clamp(60px, 10vw, 140px) clamp(20px, 6vw, 96px)',
         boxSizing:       'border-box',
       }}
     >
+      <style>{`
+        .contact-grid {
+          max-width: 1280px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: clamp(260px, 38%, 460px) 1fr;
+          gap: clamp(40px, 6vw, 96px);
+          align-items: center;
+        }
+        .contact-photo { display: block; }
+        .contact-name-email { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 767px) {
+          .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+          .contact-photo { display: none; }
+          .contact-name-email { grid-template-columns: 1fr; gap: 16px; }
+        }
+      `}</style>
       <div
         ref={ref}
-        style={{
-          maxWidth:    1280,
-          margin:      '0 auto',
-          display:     'grid',
-          gridTemplateColumns: 'clamp(260px, 38%, 460px) 1fr',
-          gap:         'clamp(40px, 6vw, 96px)',
-          alignItems:  'center',
-        }}
+        className="contact-grid"
       >
-        {/* ── LEFT: portrait card ─────────────────────────────── */}
-        <motion.div {...fadeUp(0)} style={{ position: 'relative' }}>
+        {/* ── LEFT: portrait card (hidden on mobile) ─────────── */}
+        <motion.div {...fadeUp(0)} className="contact-photo" style={{ position: 'relative' }}>
           <div style={{
             borderRadius:  24,
             overflow:      'hidden',
@@ -176,7 +186,7 @@ export default function ContactSection() {
           <motion.form {...fadeUp(0.2)} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
             {/* Name + Email row */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="contact-name-email" style={{ display: 'grid', gap: 16 }}>
               <div>
                 <FieldLabel>Name</FieldLabel>
                 <input

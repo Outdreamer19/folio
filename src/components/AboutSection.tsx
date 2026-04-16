@@ -31,7 +31,7 @@ function StatItem({ value, label, suffix = '' }: { value: number; label: string;
         ref={ref as React.RefObject<HTMLSpanElement>}
         style={{
           fontFamily:    "'Antonio', sans-serif",
-          fontSize:      60,
+          fontSize:      'clamp(40px, 8vw, 60px)' as unknown as number,
           fontWeight:    700,
           color:         'rgb(94, 103, 230)',
           lineHeight:    1,
@@ -61,17 +61,25 @@ export default function AboutSection() {
       style={{
         width:           '100%',
         backgroundColor: '#f8f8f8',
-        padding:         '100px 40px',
+        padding:         'clamp(60px, 8vw, 100px) clamp(20px, 5vw, 40px)',
       }}
     >
-      <div style={{
-        maxWidth:            1200,
-        margin:              '0 auto',
-        display:             'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap:                 80,
-        alignItems:          'center',
-      }}>
+      <style>{`
+        .about-grid {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 80px;
+          align-items: center;
+        }
+        .about-spacer { display: block; min-height: 380px; }
+        @media (max-width: 767px) {
+          .about-grid { grid-template-columns: 1fr; gap: 0; }
+          .about-spacer { display: none; }
+        }
+      `}</style>
+      <div className="about-grid">
         {/* LEFT — text content */}
         <motion.div
           whileInView={{ opacity: 1, y: 0 }}
@@ -220,8 +228,8 @@ export default function AboutSection() {
           </div>
         </motion.div>
 
-        {/* RIGHT — empty spacer; TravelingCard overlays here */}
-        <div style={{ minHeight: 380 }} />
+        {/* RIGHT — empty spacer; TravelingCard overlays here (hidden on mobile) */}
+        <div className="about-spacer" />
       </div>
     </section>
   );

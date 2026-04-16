@@ -76,9 +76,8 @@ function AccordionRow({ item }: { item: AccordionItem }) {
           textAlign:  'left',
         }}
       >
-        <span style={{
+        <span className="accordion-title" style={{
           fontFamily:    "'Antonio', sans-serif",
-          fontSize:      32,
           fontWeight:    400,
           color:         'rgb(48, 48, 48)',
           textTransform: 'uppercase',
@@ -167,17 +166,27 @@ export default function ServicesSection() {
       style={{
         width:           '100%',
         backgroundColor: '#ffffff',
-        padding:         '100px 40px',
+        padding:         'clamp(60px, 8vw, 100px) clamp(20px, 5vw, 40px)',
       }}
     >
-      <div style={{
-        maxWidth:            1200,
-        margin:              '0 auto',
-        display:             'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap:                 80,
-        alignItems:          'start',
-      }}>
+      <style>{`
+        .services-grid {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 80px;
+          align-items: start;
+        }
+        .services-spacer { display: block; min-height: 380px; }
+        .accordion-title { font-size: 32px; }
+        @media (max-width: 767px) {
+          .services-grid { grid-template-columns: 1fr; gap: 0; }
+          .services-spacer { display: none; }
+          .accordion-title { font-size: 22px !important; }
+        }
+      `}</style>
+      <div className="services-grid">
         {/* LEFT — accordion */}
         <div>
           <motion.div
@@ -220,8 +229,8 @@ export default function ServicesSection() {
           </div>
         </div>
 
-        {/* RIGHT — empty spacer; the fixed TravelingCard overlays this area */}
-        <div style={{ minHeight: 380 }} />
+        {/* RIGHT — empty spacer; hidden on mobile */}
+        <div className="services-spacer" />
       </div>
     </section>
   );

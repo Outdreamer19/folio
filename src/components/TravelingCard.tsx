@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 // ── Images ────────────────────────────────────────────────────
 const FRONT = '/shane-bell.jpg';
@@ -52,6 +53,8 @@ function getCardSize(vw: number) {
 
 // ── Component ─────────────────────────────────────────────────
 export default function TravelingCard() {
+  const isMobile = useIsMobile();
+
   // Both raw pixel scrollY (for natural scroll-out) and progress (for breakpoints/flips)
   const { scrollY, scrollYProgress } = useScroll();
 
@@ -149,6 +152,9 @@ export default function TravelingCard() {
 
   const halfW = card.w / 2;
   const halfH = card.h / 2;
+
+  // Hide the fixed scroll-driven card on mobile — it breaks the layout
+  if (isMobile) return null;
 
   return (
     // Entrance: scale up only.

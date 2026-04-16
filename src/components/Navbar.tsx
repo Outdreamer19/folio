@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const NAV_LINKS = [
   { label: 'Work',     href: '#services' },
@@ -11,6 +12,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -35,9 +37,9 @@ export default function Navbar() {
           paddingRight:         12,
           display:              'flex',
           alignItems:           'center',
-          gap:                  16,
+          gap:                  isMobile ? 10 : 16,
           boxShadow:            '0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)',
-          minWidth:             340,
+          minWidth:             isMobile ? 0 : 340,
           whiteSpace:           'nowrap',
         }}
       >
@@ -46,11 +48,13 @@ export default function Navbar() {
           <img
             src="/shane-bell.jpg"
             alt="Shane Bell"
-            style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, objectFit: 'cover' }}
+            style={{ width: 36, height: 36, borderRadius: '50%', flexShrink: 0, objectFit: 'cover' }}
           />
-          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 300, color: 'rgb(48, 48, 48)' }}>
-            Available for work
-          </span>
+          {!isMobile && (
+            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, fontWeight: 300, color: 'rgb(48, 48, 48)' }}>
+              Available for work
+            </span>
+          )}
           <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'rgb(11, 222, 102)', flexShrink: 0, boxShadow: '0 0 6px rgba(11,222,102,0.5)' }} />
         </div>
 
