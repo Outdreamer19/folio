@@ -215,6 +215,44 @@ export const projects: Project[] = [
       mobile: '/screenshots/proposal-mobile.jpg',
     },
   },
+  {
+    id: 6,
+    number: '06',
+    slug: 'shipdjm',
+    title: "Ship'd JM",
+    category: 'E-Commerce · Full Stack',
+    tagline: 'Order management for pickup and delivery.',
+    description:
+      "Ship'd JM is a web-based order management and customer engagement platform for businesses that sell via pickup and delivery. I built the customer ordering experience and a centralized admin dashboard so owners can manage products, orders, customers, delivery areas, and day-to-day operations from one place.",
+    challenge:
+      'Pickup and delivery share one platform but follow different workflows. I had to design the full order lifecycle — from product discovery through payment and fulfillment — while keeping the admin side efficient enough to reduce manual processing and communication errors as the business scales.',
+    highlights: [
+      'Modern online ordering with product browsing, cart, and secure checkout',
+      'Centralized admin dashboard for products, orders, customers, and delivery areas',
+      'Pickup and location-based delivery options with real-time order status tracking',
+      'Automated order processing to reduce manual work and communication errors',
+      'Reporting and analytics for actionable sales performance insights',
+      'Scalable architecture with planned InvoiceFeed integration for invoicing',
+    ],
+    techGroups: [
+      { label: 'Frontend', items: ['Vue 3', 'Inertia.js', 'TypeScript', 'Tailwind CSS'] },
+      { label: 'Backend', items: ['Laravel', 'PHP', 'Laravel Fortify'] },
+      { label: 'Database', items: ['MySQL'] },
+      { label: 'Tooling', items: ['Vite', 'Wayfinder'] },
+    ],
+    tech: ['Laravel', 'Vue 3', 'Inertia.js', 'TypeScript', 'Tailwind CSS', 'MySQL', 'Laravel Fortify'],
+    year: '2026',
+    status: 'live',
+    liveUrl: 'https://shipdjm.com',
+    githubUrl: 'https://github.com/Outdreamer19/shipdjm',
+    featured: true,
+    color: 'rgb(245, 158, 11)',
+    bgGradient: 'linear-gradient(135deg, rgb(245,158,11) 0%, rgb(251,191,36) 100%)',
+    screenshots: {
+      desktop: '/screenshots/Shipdjm-desktop.png',
+      mobile: '/screenshots/shipdjm-mobile.png',
+    },
+  },
 ];
 
 export const featuredProjects = projects.filter((p) => p.featured);

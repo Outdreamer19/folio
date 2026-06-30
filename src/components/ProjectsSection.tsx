@@ -104,7 +104,7 @@ export function ProjectsSection() {
                   maxWidth: '500px',
                 }}
               >
-                Four products shipped. Zero agencies. All mine.
+                Six products shipped. Zero agencies. All mine.
               </p>
             </div>
 

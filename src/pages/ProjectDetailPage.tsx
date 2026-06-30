@@ -27,7 +27,7 @@ const STATS: Record<string, Stat[]> = {
     { value: '4 wks', label: 'Build Time' },
   ],
   'shanebell-dev': [
-    { value: '5', label: 'Projects Live' },
+    { value: '6', label: 'Projects Live' },
     { value: 'React 19', label: 'Stack' },
     { value: 'Vercel', label: 'Deployed' },
     { value: '3 wks', label: 'Build Time' },
@@ -37,6 +37,12 @@ const STATS: Record<string, Stat[]> = {
     { value: '3', label: 'Tone Modes' },
     { value: 'GPT-4o', label: 'Powered' },
     { value: '3 wks', label: 'Build Time' },
+  ],
+  shipdjm: [
+    { value: '2', label: 'Fulfillment Modes' },
+    { value: 'Admin', label: 'Dashboard' },
+    { value: 'Live', label: 'Order Tracking' },
+    { value: '2026', label: 'Launched' },
   ],
 };
 
@@ -72,6 +78,12 @@ const STEPS: Record<string, Step[]> = {
     { title: 'Laravel API + OpenAI Integration', description: 'Built the backend with GPT-4o mini integration, tone modifiers and structured prompt injection.' },
     { title: 'Vue Marketing Page', description: 'Built the full marketing landing page: hero, features, how-it-works, pricing and testimonials.' },
     { title: 'PDF Export + Polish', description: 'Added PDF generation and copy-to-clipboard, then polished the glassmorphism UI with shimmer skeletons.' },
+  ],
+  shipdjm: [
+    { title: 'Platform Architecture', description: 'Mapped the full order lifecycle from product catalog through checkout, fulfillment, and post-sale engagement.' },
+    { title: 'Customer Ordering', description: 'Built product browsing, cart, pickup and delivery selection, secure payments, and order status tracking.' },
+    { title: 'Admin Dashboard', description: 'Centralized management for products, orders, customers, delivery areas, and daily business operations.' },
+    { title: 'Operations + Growth', description: 'Wired up reporting and analytics foundations with a scalable architecture for future promotions, loyalty, and InvoiceFeed integration.' },
   ],
 };
 
